@@ -1,0 +1,24 @@
+{
+  "name": "yai-maps-api",
+  "version": "1.0.0",
+  "description": "Yai maps is a map service provider to handle all your location based queries out of your machine in the external service",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Barnaan2/yai-maps-api.git"
+  },
+  "keywords": [
+    "location",
+    "map"
+  ],
+  "author": "Bernabas Tekkalign",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Barnaan2/yai-maps-api/issues"
+  },
+  "homepage": "https://github.com/Barnaan2/yai-maps-api#readme"
+}
