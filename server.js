@@ -22,7 +22,17 @@ dotenv.config({
     path:'./config/config.env'
 });
 
-const app = require('./app')
+const app = require('./app');
+
+mongoose
+.connect(process.env.DATABASE_LOCAL,{
+    useUnifiedTopology:true,
+    useNewUrlParser:true,
+    useFindAndModify:true,
+}).then(()=>{
+    console.log("Mongodb is connected successfully.")
+})
+
 const PORT = process.env.PORT;
 app.listen(PORT,()=>{
     console.log(`The server is started at port ${PORT}`);
