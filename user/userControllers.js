@@ -1,5 +1,5 @@
 const catchAsync = require('../error_handlers/catchAsync')
-const User = require('../models/userModel')
+const User = require('./userModel')
 
 // initial route for checking everything is working as excpected 
 exports.getUsers = catchAsync(async(req,res,next)=>{

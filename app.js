@@ -1,7 +1,9 @@
 const express  = require('express')
 const app = express()
 const AppError = require('./error_handlers/appError')
-const userRoutes = require('./routes/userRoute')
+const userRoutes = require('./user/userRoute')
+const projectRoutes = require('./project/projectRoute')
+const objectRoutes = require('./object/objectRoute')
 const globalErrorHandler = require('./error_handlers/errorController')
 const morgan = require('morgan')
 // Parsing data in the urls
@@ -10,7 +12,9 @@ app.use(express.json({
     limit:'10kb'
 }))
 app.use(morgan('combined'));
-app.use('/',userRoutes);
+app.use('',userRoutes);
+app.use('/projects/',projectRoutes)
+app.use('/objects',objectRoutes)
 
 // // Not found error handler
 app.all('*',(req,res,next)=>{
