@@ -8,13 +8,14 @@ const User = require('../user/userModel')
 exports.getUsers = catchAsync(async (req,res,next)=>{
     // there should be two type of users. one is system admin
     // the super user should not be shown here.
-    const user = User.find()
+    const users = User.find()
     try{
 
     }
     catch(err){
         res.status(200).json({
             status:"200_OK",
+            results:users.length,
             data:{
                 users
             }
@@ -27,6 +28,7 @@ try{
 const projects = Project.find()
 res.status(200).json({
     status:"200_0k",
+    results:projects.length,
     data:{
         projects
     }

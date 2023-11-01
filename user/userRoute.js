@@ -8,7 +8,7 @@ const apiKeyMiddleware = require('../auth/apiKeyMiddleware')
 router.route('').get(UserController.getUsers)
 router.route('/register').post(authCtrl.register);
 router.route('/login').post(authCtrl.login);
-router.route('/generate-api-key/').post(authMiddleware.protect,apiKeyMiddleware.verify,ApiKeyController.generateApiKey);
+router.route('/change-secret-key/').post(authMiddleware.protect,authCtrl.changeSecretKey);
 
 
 

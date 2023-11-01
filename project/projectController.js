@@ -9,6 +9,7 @@ try{
     const projects =await Project.find({ user: req.user });
     res.status(200).json({
         status:"200_OK",
+        results:projects.length,
         data:{
             projects
         }

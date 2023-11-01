@@ -1,6 +1,6 @@
 const AppError = require('../error_handlers/appError')
 const catchAsync = require('../error_handlers/catchAsync')
-const apiKeyUtils = require('../utils/apiKeyUtils')
+const apiKeyUtils = require('./apiKeyUtils')
 
 
 // generating api key.

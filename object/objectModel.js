@@ -30,8 +30,15 @@ const objectSchema = new mongoose.Schema({
     }
 });
 //! for the project and the objId the unique together field should be added .
+objectSchema.index({ objId: 1 , project: 1 }, { unique: true })
+
 // Create a 2dsphere index for the 'location' field for geospatial queries
 objectSchema.index({ location: '2dsphere' });
+
+// AGGREGATION MIDDLEWARE
+// objectSchema.pre('aggregate',function(next){
+//     this.pipeline().unshift({$match:{ deleted:{$ne: true}}})
+// })
 
 const Object = mongoose.model('Object', objectSchema);
 

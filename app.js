@@ -14,7 +14,7 @@ app.use(express.json({
 app.use(morgan('combined'));
 app.use('',userRoutes);
 app.use('/projects/',projectRoutes)
-app.use('/objects',objectRoutes)
+app.use('/objects/',objectRoutes)
 
 // // Not found error handler
 app.all('*',(req,res,next)=>{

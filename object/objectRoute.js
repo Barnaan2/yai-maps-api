@@ -3,6 +3,9 @@ const apiKeyMiddleware = require('../auth/apiKeyMiddleware')
 const objectController = require('./objectController')
 const projectMiddleware = require('../project/projectMiddleware')
 
+router.route('/project/:id/distance/:latlng/:unit').get(apiKeyMiddleware.verify, projectMiddleware.checkProject,objectController.getDistances)
+router.route('/project/:id/objects-within/:distance/center/:latlng/:unit').get(apiKeyMiddleware.verify, projectMiddleware.checkProject,objectController.getObjectsWithin)
+// objects-within/433/center/-40,45/unit/mi
 router 
 .route('/project/:id')
 .get(apiKeyMiddleware.verify, projectMiddleware.checkProject,objectController.getObjects)
