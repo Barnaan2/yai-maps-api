@@ -7,6 +7,7 @@ const  mongoose  = require('mongoose')
 exports.getObjects = catchAsync(async (req,res,next)=>{
    try{
 const objects = await Object.find({project:req.project})
+
        res.status(200).json({
            status:"200_OK",
            results:objects.length,
@@ -23,18 +24,28 @@ const objects = await Object.find({project:req.project})
 
 
 exports.getObject = catchAsync(async (req,res,next)=>{
+
 // how to authorize ?
    try{
        const pk = req.params.pk
+       console.log("hello")
        const object = await Object.findById(pk)
+    // console.log(object.project)
+    //    print("hello")
        // authorization should be done here.
-       authUtils.authorizeObj(object,req.project,next)
-       res.status(200).json({
-           status:"200_OK",
-           data:{
-              object
-           }
-       });
+      
+       if(!authUtils.authorizeObj(object.project,req.project.id)){
+        next(new AppError('Not Found',404))
+       }
+       else{
+
+           res.status(200).json({
+               status:"200_OK",
+               data:{
+                  object
+               }
+           });
+       }
    }
     catch(err){
         next(new AppError(err,400))
@@ -78,17 +89,22 @@ exports.updateObject = catchAsync(async (req,res,next)=>{
       const pk = req.params.pk
       const object = await Object.findById(pk)
       const data = req.body
-    authUtils.authorizeObj(object,req.project,next)
-      const updatedObject = await Object.findOneAndUpdate(pk,data,{
-          new:true,
-          runValidators:true,
-      })
-      res.status(201).json({
-          status:'201_CONTENT_UPDATED',
-          data:{
-              updatedObject
-          }
-      })
+    if(!authUtils.authorizeObj(object.project,req.project.id)){
+        next(new AppError('Not Found',404))
+       }
+
+       else{
+           const updatedObject = await Object.findOneAndUpdate(pk,data,{
+               new:true,
+               runValidators:true,
+           })
+           res.status(201).json({
+               status:'201_CONTENT_UPDATED',
+               data:{
+                   updatedObject
+               }
+           })
+       }
   }
 
     catch(err){
@@ -101,16 +117,26 @@ exports.deleteObject = catchAsync(async (req,res,next)=>{
 try{
     const pk = req.params.pk;
     const object = await Object.findById(pk)
-    authUtils.authorizeObj(object,req.project,next)
-    await Object.findOneAndDelete(pk)
-        
-    res.status(204).json({
-        status:"THE CONTENT IS BEING DELETED",
-        data:{
-            message:"Deleted content"
+    if(!authUtils.authorizeObj(object.project,req.project.id)){
+        next(new AppError('Not Found',404))
+       }
+       else{
+
+        const objectNew = await Object.findByIdAndDelete(pk);
+        if(!objectNew){
+         next(new AppError('Not Found',404))
         }
-    })
-}
+    else{
+        res.status(204).json({
+            status:"THE CONTENT IS BEING DELETED",
+            data:{
+                message:"Deleted content"
+            }
+        })
+    }
+    
+       }
+    }
 catch(err){
     next(new AppError(err,400))
 }

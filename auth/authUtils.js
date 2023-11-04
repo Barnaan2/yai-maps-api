@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const AppError = require('../error_handlers/appError')
 const catchAsync = require('../error_handlers/catchAsync');
 exports.signToken = (id) =>{
     return jwt.sign({id:id},
@@ -9,18 +10,25 @@ exports.signToken = (id) =>{
 }
 
 
-const authorizeObj = (object,project,next)=>{
+exports.authorizeObj =  (currProject,userProject) =>
+{
   try{
-const projId = project._id
-const objProjId = object.project._id
-if(projId !== objProjId){
-next(new AppError('Not found',404))
+userProject = userProject.toString()
+currProject = currProject.toString()
+if(currProject == userProject ){
+ return true;
 }
-next()
+else{
+
+  return false;
+}
+
+
 }
 
 catch(err){
-   next(new AppError(err,404))
+  return false;
+   throw new AppError(err,404)
 }
    
 }

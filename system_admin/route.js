@@ -5,6 +5,7 @@ const authMiddleware = require('../auth/authMiddleware')
 
 
 router.route('/users/').get(authMiddleware.protect,Middleware.isAdmin,Controller.getUsers)
+router.route('/users/:id').get(authMiddleware.protect,Middleware.isAdmin,Controller.getUser)
 router.route('/projects/').get(authMiddleware.protect,Middleware.isAdmin,Controller.getProjects)
 router.route('/projects/:id').get(authMiddleware.protect,Middleware.isAdmin,Controller.getProject)
 

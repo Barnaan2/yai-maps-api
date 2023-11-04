@@ -7,13 +7,17 @@ exports.addAdmin = catchAsync(async (req,res,next)=>{
     try{
 // Here the users role should be changed to admin
 const id = req.params.id
-const user = await User.findById(id)
-user.role = "SystemAdmin"
-await user.save()
+const data = {
+    "role":"SystemAdmin"
+}
+const updatedUser = await User.findOneAndUpdate(id,data,{
+    new:true,
+    runValidators:false,
+})
 res.status(201).json({
     status:"201_UPDATED",
     data:{
-        user
+       updatedUser
     }
 })
     }
@@ -27,13 +31,17 @@ exports.removeAdmin = catchAsync(async (req,res,next)=>{
     try{
 // Here the users role should be changed to User
 const id = req.params.id
-const user = await User.findById(id)
-user.role = "User"
-await user.save()
+const data = {
+    "role":"User"
+}
+const updatedUser = await User.findOneAndUpdate(id,data,{
+    new:true,
+    runValidators:false,
+})
 res.status(201).json({
     status:"201_UPDATED",
     data:{
-        user
+        updatedUser
     }
 })
     }

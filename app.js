@@ -4,6 +4,10 @@ const AppError = require('./error_handlers/appError')
 const userRoutes = require('./user/userRoute')
 const projectRoutes = require('./project/projectRoute')
 const objectRoutes = require('./object/objectRoute')
+const systemAdminRoutes = require('./system_admin/route')
+const superUserRoutes = require('./system_admin/superUserRoute')
+const objectDashboardRoutes = require('./object/dashboardRoute')
+const projectDashboardRoutes = require('./project/dashboardRoute')
 const globalErrorHandler = require('./error_handlers/errorController')
 const morgan = require('morgan')
 // Parsing data in the urls
@@ -15,6 +19,10 @@ app.use(morgan('combined'));
 app.use('',userRoutes);
 app.use('/projects/',projectRoutes)
 app.use('/objects/',objectRoutes)
+app.use('/dashboard/object/',objectDashboardRoutes)
+app.use('/dashboard/projects/',projectDashboardRoutes)
+app.use('/system-admins/',systemAdminRoutes)
+app.use('/super-users/',superUserRoutes)
 
 // // Not found error handler
 app.all('*',(req,res,next)=>{

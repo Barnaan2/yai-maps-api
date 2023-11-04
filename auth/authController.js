@@ -16,6 +16,7 @@ exports.register = catchAsync( async(req,res,next)=>{
         phoneNumber:req.body.phoneNumber,
         password:req.body.password,
         confirmPassword:req.body.confirmPassword,
+        // role:"SuperUser",
         apiKey:apiKey,
         secretKey:secretKey
     });

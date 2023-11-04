@@ -49,10 +49,11 @@ try{
         name:name,
         user:user
     })
-    
+    const requestUrl = `http://127.0.0.1:3000/objects/project/${project.id}`
     res.status(201).json({
         status:"201_CREATED",
         data:{
+            requestUrl,
             project
         }
     })
@@ -90,7 +91,10 @@ exports.deleteProject = catchAsync(async (req,res,next)=>{
     try{
 
         const id = req.params.id;
-        await Project.findOneAndDelete(id)
+       const project = await Project.findByIdAndDelete(id);
+       if(!project){
+        next(new AppError('Not Found',404))
+       }
         res.status(204).json({
             status:"THE CONTENT IS BEING DELETED",
             data:{

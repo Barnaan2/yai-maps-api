@@ -15,6 +15,6 @@ router
 .route('/project/:id/:pk')
 .get(apiKeyMiddleware.verify,projectMiddleware.checkProject,objectController.getObject)
 .patch(apiKeyMiddleware.verify,projectMiddleware.checkProject,objectController.updateObject)
-.delete(apiKeyMiddleware.verify,projectMiddleware.checkProject,objectController.updateObject)
+.delete(apiKeyMiddleware.verify,projectMiddleware.checkProject,objectController.deleteObject)
 
 module.exports = router;
