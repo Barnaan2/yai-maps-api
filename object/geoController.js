@@ -2,15 +2,16 @@ const AppError = require("../error_handlers/appError");
 const Object = require("./objectModel");
 const catchAsync = require("../error_handlers/catchAsync");
 const mongoose = require("mongoose");
+const Paginator = require("../utils/pagination");
+const Utility = require("../utils/utility");
 
 exports.getObjectsWithin = catchAsync(async (req, res, next) => {
   try {
     //If specifying latitude and longitude coordinates, list the longitude first, and then latitude.
 
-    // Valid longitude values are between -180 and 180,  both inclusive.
+    // Valid longitude values are between -180 and 180, both inclusive.
 
     // Valid latitude values are between -90 and 90, both inclusive.
-
     const { distance, latlng, unit } = req.params;
     const [lat, lng] = latlng.split(",");
     if (!lat || !lng) {
@@ -20,16 +21,22 @@ exports.getObjectsWithin = catchAsync(async (req, res, next) => {
           400
         )
       );
-    } else if (lat > 90 || lat < -90 || lng > 180 || lng < -180) {
+    }
+    if (
+      parseInt(lat) > 180 ||
+      parseInt(lat) < -180 ||
+      parseInt(lng) > 90 ||
+      parseInt(lng) < -90
+    ) {
       next(
         new AppError(
-          "Please Provide  the correct latitude in the range of [90 to -90] and longitude in the range of [180 to -180] in the format lat,lng",
+          "Please Provide latitude and longitude in the range of lat[-180,180], lng[-90,90]",
           400
         )
       );
     }
 
-    const radius = unit === "km" ? distance / 3963.2 : distance / 6378.1;
+    const radius = unit === "mi" ? distance / 3963.2 : distance / 6378.1;
 
     const objects = await Object.find({
       location: {
@@ -37,13 +44,19 @@ exports.getObjectsWithin = catchAsync(async (req, res, next) => {
       },
       project: mongoose.Types.ObjectId(req.project._id),
     }).select("objId");
+
+    const { page, pageSize } = req.query;
+    const paginator = new Paginator(
+      objects,
+      page,
+      pageSize,
+      Utility.endPoint(req.originalUrl)
+    );
+    const data = paginator.paginate();
     //  console.log(distance,lat,lng,unit)
     res.status(200).json({
       status: "200_OK",
-      results: objects.length,
-      data: {
-        objects,
-      },
+      data,
     });
   } catch (err) {
     next(new AppError(err, 400));
@@ -52,11 +65,30 @@ exports.getObjectsWithin = catchAsync(async (req, res, next) => {
 
 exports.getDistances = catchAsync(async (req, res, next) => {
   try {
-    const { latlng, unit } = req.params;
+    const { latlng } = req.params;
     const [lat, lng] = latlng.split(",");
+    if (!lat || !lng) {
+      next(
+        new AppError(
+          "Please Provide latitude and longitude in the format lat,lng",
+          400
+        )
+      );
+    }
+    if (
+      parseInt(lat) > 180 ||
+      parseInt(lat) < -180 ||
+      parseInt(lng) > 90 ||
+      parseInt(lng) < -90
+    ) {
+      next(
+        new AppError(
+          "Please Provide latitude and longitude in the range of lat[-180,180], lng[-90,90]",
+          400
+        )
+      );
+    }
 
-    const proj_id = req.project._id;
-    console.log(proj_id);
     const distances = await Object.aggregate([
       {
         $geoNear: {
@@ -79,13 +111,19 @@ exports.getDistances = catchAsync(async (req, res, next) => {
       },
     ]);
 
+    const { page, pageSize } = req.query;
+    const paginator = new Paginator(
+      distances,
+      page,
+      pageSize,
+      Utility.endPoint(req.originalUrl)
+    );
+    const data = paginator.paginate();
+
     res.status(200).json({
       status: "200_OK",
-      // results:distances.length,
-      unit: "Kilo meters(KM)",
-      data: {
-        distances,
-      },
+      unit: "Kilo Meters",
+      data,
     });
   } catch (err) {
     next(new AppError(err, 400));

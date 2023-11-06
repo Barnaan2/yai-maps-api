@@ -2,20 +2,21 @@ const router = require("express").Router();
 const apiKeyMiddleware = require("../auth/apiKeyMiddleware");
 const objectController = require("./objectController");
 const projectMiddleware = require("../project/projectMiddleware");
+const geoController = require("./geoController");
 
 router
   .route("/project/:id/distance/:latlng/")
   .get(
     apiKeyMiddleware.verify,
     projectMiddleware.checkProject,
-    objectController.getDistances
+    geoController.getDistances
   );
 router
   .route("/project/:id/objects-within/:distance/center/:latlng/:unit")
   .get(
     apiKeyMiddleware.verify,
     projectMiddleware.checkProject,
-    objectController.getObjectsWithin
+    geoController.getObjectsWithin
   );
 // objects-within/433/center/-40,45/unit/mi
 router
