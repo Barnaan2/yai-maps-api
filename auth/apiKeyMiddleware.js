@@ -32,6 +32,9 @@ exports.verify = catchAsync(async (req, res, next) => {
       next(new AppError("your apiKey or secretKey is not correct !", 400));
     }
   } catch (err) {
-    next(new AppError(err, 400));
+    // res.status(400).json({
+    //   message: err,
+    // });
+    throw new AppError("Error happened while processing your request .", 400);
   }
 });
