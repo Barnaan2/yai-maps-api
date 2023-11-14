@@ -7,6 +7,7 @@ const app = require("../../app.js");
 //   path: "./config/config.env",
 // });
 
+// https://jestjs.io/docs/expect
 // connecting to the database before each test
 
 // beforeEach(async () => {

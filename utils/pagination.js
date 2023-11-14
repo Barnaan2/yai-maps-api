@@ -4,7 +4,7 @@ const AppError = require("../error_handlers/appError");
 class Paginator {
   constructor(data, page = 1, pageSize = 10, endPoint) {
     this.page = 1;
-    this.pageSize = 10;
+    this.pageSize = 1;
     this.data = data;
     this.endPoint = endPoint;
     this.startIndex;
