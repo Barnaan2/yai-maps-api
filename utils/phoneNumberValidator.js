@@ -1,3 +1,8 @@
+/**
+ * !DISCLAIMER: THIS CLASS IS EXPLICITLY DESIGNED TO SUPPORT ONLY ETHIOPIAN PHONE NUMBERS.
+ * @param {String} [phoneNumber] -Phone number to be validated
+ * @return {Boolean} - true if valid and false if not valid.
+ */
 class PhoneNumberValidator {
   constructor(phoneNumber) {
     this.phoneNumber;
@@ -21,7 +26,7 @@ class PhoneNumberValidator {
 
         //? checking if the phone number is a number.
         if (isNaN(phoneNumber)) {
-          //? i think instead of throwing an error i should stamp the number as invalid phoneNumber and return false
+          //? stamping the phone number as invalid.
           this._isValidSetter(false);
         } else {
           //? set the phoneNumber variable

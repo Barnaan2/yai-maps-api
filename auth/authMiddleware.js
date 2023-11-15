@@ -8,7 +8,7 @@ const { promisify } = require("util");
 exports.protect = catchAsync(async (req, res, next) => {
   try {
     let token;
-    // Checking the Authorization in header .
+    // Checking the Authorization in headers .
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
